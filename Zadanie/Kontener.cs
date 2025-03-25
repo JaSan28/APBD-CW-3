@@ -8,6 +8,7 @@ public abstract class Kontener
     public double WagaWlasna { get; protected set; }
     public double Dlugosc { get; protected set; }
     public double MaksymalnaLadownosc { get; protected set; }
+    private static Dictionary<string, int> _licznikiTypow = new Dictionary<string, int>();
 
     protected Kontener(string typ, double wysokosc, double wagaWlasna, double dlugosc, double maksymalnaLadownosc)
     {
@@ -20,7 +21,11 @@ public abstract class Kontener
 
     private string GenerujNumerSeryjny(string typ)
     {
-        return $"KON-{typ}-{Guid.NewGuid().ToString().Substring(0, 8)}";
+        if (!_licznikiTypow.ContainsKey(typ))
+        _licznikiTypow[typ] = 0;
+    
+        _licznikiTypow[typ]++;
+        return $"KON-{typ}-{_licznikiTypow[typ]}";
     }
 
     public virtual void ZaladujLadunek(double masa)
